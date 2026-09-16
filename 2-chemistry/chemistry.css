@@ -170,3 +170,19 @@ html.print-pdf .emission .transition-electron{transform:translateY(120px)}
 .buffer-slide .buffer-product.visible{transition-delay:.45s}
 @media(prefers-reduced-motion:reduce){.water-forward,.water-back,.buffer-added,.buffer-slide .buffer-product{transition:none!important}}
 @media print{.buffer-added{display:none}.water-forward,.water-back{transition:none!important}}
+
+/* Refinement of the atom, protein-question and buffer examples. */
+.polarity-slide .split{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:3cqw}
+.protein-hint-layout{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:3cqw}
+.protein-hint-layout .figure img{border-radius:1cqw}
+.buffer-comparison .tile:last-child{background:#e8efcf}
+.buffer-comparison .tile{padding:1.4cqw;gap:.65cqw;justify-content:flex-start}
+.buffer-comparison .tile .formula{margin-top:auto}
+.buffer-comparison .math{font-size:1.65cqw}
+.homework-buffer-table th,.homework-buffer-table td{text-align:center}
+.homework-buffer-table th:first-child,.homework-buffer-table td:first-child{text-align:left;white-space:nowrap}
+.homework-buffer-table td{height:3cqw}
+
+#chem-016 .figure.photo{height:auto;aspect-ratio:1131/707;border-radius:1.5cqw;overflow:hidden}
+#buffer-volumes .equation{padding:.85cqw 1.5cqw}
+#buffer-volumes .equation .katex{font-size:2cqw}

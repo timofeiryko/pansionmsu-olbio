@@ -4,7 +4,7 @@
 
 [Лекция 1. Что такое биология?](https://timofeiryko.github.io/pansionmsu-olbio/1-intro/)
 
-[Домашняя работа после лекции 1](https://timofeiryko.github.io/pansionmsu-olbio/1-homework/) · [Лекция 2. Химия жизни](https://timofeiryko.github.io/pansionmsu-olbio/2-chemistry/) · [Начало лекции 4. Биохимия](https://timofeiryko.github.io/pansionmsu-olbio/4-biochemistry/)
+[Домашняя работа после лекции 1](https://timofeiryko.github.io/pansionmsu-olbio/1-homework/) · [Лекция 2. Химия жизни](https://timofeiryko.github.io/pansionmsu-olbio/2-chemistry/) · [ДЗ после лекции 2](https://timofeiryko.github.io/pansionmsu-olbio/2-homework/) · [Начало лекции 4. Биохимия](https://timofeiryko.github.io/pansionmsu-olbio/4-biochemistry/)
 
 Репозиторий: `timofeiryko/pansionmsu-olbio`. Первая лекция находится в папке `1-intro/`. После изменения HTML, CSS или медиа сделайте commit и push в `main` — GitHub Pages обновит сайт автоматически. Корневой `index.html` только открывает первую лекцию.
 
@@ -12,10 +12,11 @@
 
 ## Открыть
 
-- `2-chemistry/index.html` — «Химия жизни», 92 слайда: разбор ДЗ и темы 2.1–2.3 плана курса.
-- `4-biochemistry/index.html` — начало «Биохимии», 92 слайда: перенесённая химия углерода, реакции и биомолекулы. Добавлено краткое введение в ферменты и пример с яблоком; подробная кинетика и метаболические пути пока не добавлены.
+- `2-chemistry/index.html` — «Химия жизни», 85 слайдов: разбор ДЗ и темы 2.1–2.3 плана курса.
+- `4-biochemistry/index.html` — начало «Биохимии», 94 слайда: перенесённая химия углерода, реакции и биомолекулы. Добавлено краткое введение в ферменты и пример с яблоком; подробная кинетика и метаболические пути пока не добавлены.
+- `2-homework/index.html` — ДЗ после «Химии жизни»: расчётная часть практикума ВсОШ по биологии, ряд фосфатных буферов; только условие, без ответов.
 - `1-homework/index.html` — отдельная домашняя работа, 2 олимпиадных задания (НТО и «Высшая проба»), без ответов и дополнительных слайдов.
-- `biochemistry.html` — автономное начало лекции 4; `chemistry-of-life.html` и `homework-1.html` — автономные копии этих презентаций после запуска `python package.py`.
+- `biochemistry.html` — автономное начало лекции 4; `chemistry-of-life.html`, `homework-1.html` и `homework-2.html` — автономные копии этих презентаций после запуска `python package.py`.
 - `olympiad-biology-reveal.zip` — весь редактируемый курс: лекции 1 и 2, начало лекции 4, ДЗ, локальные библиотеки и иллюстрации. Распакуйте папку целиком: новые презентации используют общую тему из `1-intro/`.
 - [Источники и отбор олимпиадных задач](2-chemistry/SOURCES.md) · [Карта переноса материала PPTX](2-chemistry/CONTENT-MAP.md).
 
@@ -96,7 +97,7 @@ S — окно докладчика с таймером и следующим с
 
 ## Обновить автономную копию
 
-`python package.py` также обновляет `chemistry-of-life.html`, `homework-1.html`, `biochemistry.html` и архив со всеми четырьмя презентациями. Формулы KaTeX и шрифты встроены в автономные файлы. Авторитетный источник для правок — `index.html` соответствующей папки, а не собранная копия.
+`python package.py` также обновляет `chemistry-of-life.html`, `homework-1.html`, `homework-2.html`, `biochemistry.html` и архив со всеми пятью презентациями. Формулы KaTeX и шрифты встроены в автономные файлы. Авторитетный источник для правок — `index.html` соответствующей папки, а не собранная копия.
 
 После правок `1-intro/index.html` выполните `python package.py` из корня проекта. Нужна только стандартная библиотека Python. Скрипт обновляет автономный HTML и ZIP, в том числе после добавления слайдов. Автономный HTML остаётся в корне под именем `olympiad-biology.html`.
 
