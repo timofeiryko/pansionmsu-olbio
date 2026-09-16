@@ -6,7 +6,7 @@ lecture=root/'1-intro'
 source=(lecture/'index.html').read_text(encoding='utf-8')
 html=source
 for src in re.findall(r'<link rel="stylesheet" href="([^"]+)">',source):
-    html=html.replace(f'<link rel="stylesheet" href="{src}">','<style>'+(lecture/src).read_text(encoding='utf-8')+'</style>')
+    html=html.replace(f'<link rel="stylesheet" href="{src}">','<style>'+(lecture/src.split('?',1)[0]).read_text(encoding='utf-8')+'</style>')
 for src in re.findall(r'<script src="([^"]+)"></script>',source):
     js=(lecture/src).read_text(encoding='utf-8').replace('</script','<\\/script')
     html=html.replace(f'<script src="{src}"></script>','<script>'+js+'</script>')
