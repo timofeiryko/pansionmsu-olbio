@@ -22,6 +22,7 @@ for (const hydrated of [true, false]) {
       }
     }
     assert.equal(model.particles.filter(p=>!p.solute && p.side===1).length - 30, model.forward-model.backward);
+    assert.equal(model.offset, 150*(model.forward-model.backward)/60, 'Volume must follow actual water transfer');
     if (frame % 24 === 0) {
       maxBound = Math.max(maxBound, model.particles.filter(p=>p.hydratedTo!==null).length);
       for (let i=0;i<model.particles.length;i++) for (let j=i+1;j<model.particles.length;j++) {

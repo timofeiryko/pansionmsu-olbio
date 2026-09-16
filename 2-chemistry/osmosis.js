@@ -1,6 +1,6 @@
 // Coarse kinetic model: identical elastic discs, with solute excluded by the membrane.
-// Coupled movable boundaries keep total volume fixed; their restoring load represents
-// the pressure difference that builds up as the liquid levels separate. No directional
+// Volume follows the actual particle balance, with constant partial particle volumes.
+// A conservative energy step represents the growing hydrostatic back-pressure. No directional
 // crossing probability, scripted route, or target transfer count is used.
 function createOsmosis(seed = 713) {
   const random = () => ((seed = (1664525 * seed + 1013904223) >>> 0) / 2 ** 32);
@@ -15,20 +15,17 @@ function createOsmosis(seed = 713) {
       side, crossed: -10, hydratedTo: null, releaseAt: 0, rebindAt: 0});
   }
   return {particles, kineticEnergy: particles.reduce((sum,p)=>sum+p.vx*p.vx+p.vy*p.vy,0),
-    offset: 0, velocity: 0, time: 0, forward: 0, backward: 0,
+    offset: 0, time: 0, forward: 0, backward: 0,
     contacts: 0, wallHits: 0, soluteHits: 0, hydrationExchanges: 0,
     pores: [[245, 280], [298, 340]]};
 }
 
 function confineOsmosis(p, model) {
   const top = 195 + (p.side ? -model.offset : model.offset);
-  const wallVelocity = p.side ? -model.velocity : model.velocity;
   if (p.y < top + p.r) {
     p.y = top + p.r;
-    if (p.vy < wallVelocity) {
-      const impulse = 2 * (wallVelocity - p.vy);
-      p.vy += impulse;
-      model.velocity += (p.side ? 1 : -1) * impulse / 180;
+    if (p.vy < 0) {
+      p.vy = -p.vy;
       model.wallHits++;
     }
   }
@@ -38,9 +35,19 @@ function confineOsmosis(p, model) {
   // A pore has the same geometry and permeability in either direction.
   if (inPore) {
     if ((p.side === 0 && p.x > 420 + p.r + 2) || (p.side === 1 && p.x < 420 - p.r - 2)) {
+      // Climbing toward the higher column requires energy; returning releases it.
+      // The same potential is used in both directions. At equal levels it is zero.
+      const direction = p.side === 0 ? 1 : -1;
+      const energy = p.vx*p.vx - direction * 2 * 90 * model.offset;
+      if (energy < 0 || direction * model.offset >= 60) {
+        p.x = 420 - direction * (p.r + 3); p.vx = -p.vx;
+        return;
+      }
+      p.vx = direction * Math.sqrt(energy);
       if (p.side === 0) model.forward++; else model.backward++;
       p.side = 1 - p.side;
       p.crossed = model.time;
+      model.offset = 150 * (model.forward - model.backward) / 60;
     }
   } else if (Math.abs(p.x - 420) < p.r + 3 || (p.side === 0 ? p.x > 420 : p.x < 420)) {
     p.x = 420 + (p.side ? 1 : -1) * (p.r + 3);
@@ -69,10 +76,6 @@ function stepOsmosis(model, dt) {
       }
     }
   }
-  // A shared boundary coordinate conserves the sum of the two chamber volumes.
-  model.velocity += (-0.8 * model.offset - 65 * model.velocity) / 180 * dt;
-  model.offset += model.velocity * dt;
-  if (Math.abs(model.offset) > 45) { model.offset = Math.sign(model.offset) * 45; model.velocity = 0; }
   for (const p of model.particles) { p.x += p.vx * dt; p.y += p.vy * dt; confineOsmosis(p, model); }
   for (let pass = 0; pass < 3; pass++) {
     for (let i = 0; i < model.particles.length; i++) for (let j = i + 1; j < model.particles.length; j++) {
@@ -91,7 +94,7 @@ function stepOsmosis(model, dt) {
     }
     for (const p of model.particles) confineOsmosis(p, model);
   }
-  // Isothermal bath replaces energy lost to the moving boundaries and hydration relaxation.
+  // Both compartments share a temperature despite pressure work and hydration relaxation.
   for (const side of [0,1]) {
     const ps = model.particles.filter(p=>p.side===side);
     const energy = ps.reduce((sum,p)=>sum+p.vx*p.vx+p.vy*p.vy,0);
