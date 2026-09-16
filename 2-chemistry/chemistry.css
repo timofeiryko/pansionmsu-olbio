@@ -125,10 +125,6 @@ html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .gas-dot{anima
 .question-label{display:inline-flex;align-items:center;gap:.6cqw;background:var(--tint);color:var(--accent);border-radius:100px;padding:.45cqw 1.1cqw;font-weight:650}
 .question-label::before{content:"?";font-weight:650}
 .audience-question .big-question{border-left:.3cqw solid var(--accent);padding-left:1.4cqw}
-.particle-count-slide .split{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:3cqw}
-.particle-count-slide .equation{padding:1cqw}
-.particle-count-slide .math{font-size:3cqw}
-.particle-count-slide li .math{font-size:inherit}
 
 .orbital-filling-slide .split{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:3cqw}
 .transition-pair{display:grid;grid-template-columns:1fr 1fr;gap:4cqw;flex:1;min-height:0}
@@ -186,3 +182,31 @@ html.print-pdf .emission .transition-electron{transform:translateY(120px)}
 #chem-016 .figure.photo{height:auto;aspect-ratio:1131/707;border-radius:1.5cqw;overflow:hidden}
 #buffer-volumes .equation{padding:.85cqw 1.5cqw}
 #buffer-volumes .equation .katex{font-size:2cqw}
+
+/* Coulomb attraction: fragment 1 doubles r and quarters the force arrow. */
+.electrostatic-model .charge-electron{transition:transform .9s ease}
+.electrostatic-model .charge-spring{color:var(--accent);transform-origin:0 0;transition:transform .9s ease,opacity .9s ease,stroke-width .9s ease}
+.electrostatic-model .charge-ruler{stroke:var(--muted);stroke-width:1.5;fill:none;transform-origin:80px 250px;transition:transform .9s ease}
+.electrostatic-model .charge-ruler-cap{stroke:var(--muted);stroke-width:1.5;fill:none}
+.electrostatic-model .force-arrow{stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.electrostatic-model .charge-near,.electrostatic-model .charge-far{transition:opacity .35s ease}
+.electrostatic-model .charge-far{opacity:0}
+.electrostatic-slide:has(.charge-distance-step.visible) .charge-electron{transform:translateX(180px)}
+.electrostatic-slide:has(.charge-distance-step.visible) .charge-spring{transform:scaleX(2.5);opacity:.45;stroke-width:2}
+.electrostatic-slide:has(.charge-distance-step.visible) .charge-ruler{transform:scaleX(2)}
+.electrostatic-slide:has(.charge-distance-step.visible) .charge-near{opacity:0}
+.electrostatic-slide:has(.charge-distance-step.visible) .charge-far{opacity:1}
+.electronegativity-map .en-cell{fill:#fff;stroke:#d7ded4;stroke-width:1.2}
+.electronegativity-map .en-noble{fill:#f2f4f0}
+.electronegativity-map .en-symbol{font-size:23px}
+.electronegativity-map .en-direction{font-size:24px;fill:var(--accent)}
+.electronegativity-map .en-trend{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.electronegativity-map .en-fluorine{transition:fill .3s ease}
+.electronegativity-slide:has(.en-maximum.visible) .en-fluorine{fill:var(--tint);stroke:var(--accent);stroke-width:2}
+@media(prefers-reduced-motion:reduce){.electrostatic-model *,.electronegativity-map *{transition:none!important}}
+html.print-pdf .electrostatic-slide .charge-electron{transform:translateX(180px)}
+html.print-pdf .electrostatic-slide .charge-spring{transform:scaleX(2.5);opacity:.45;stroke-width:2}
+html.print-pdf .electrostatic-slide .charge-ruler{transform:scaleX(2)}
+html.print-pdf .electrostatic-slide .charge-near{opacity:0}
+html.print-pdf .electrostatic-slide .charge-far{opacity:1}
+html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(--accent)}
