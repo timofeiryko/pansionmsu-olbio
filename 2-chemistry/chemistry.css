@@ -88,17 +88,13 @@
 
 
 
-.gas-field{position:relative;flex:1;min-height:10cqw;overflow:hidden;background:var(--tint);border-radius:1.4cqw}
-.gas-dot{position:absolute;width:1.2cqw;height:1.2cqw;left:var(--x);top:var(--y);border-radius:50%;background:var(--accent);animation:chem-motion var(--speed,4s) linear infinite;animation-play-state:paused}
-.present .gas-dot{animation-play-state:running}.demo.paused .gas-dot{animation-play-state:paused}
-@keyframes chem-motion{0%,100%{transform:translate(0,0)}25%{transform:translate(3cqw,1.5cqw)}50%{transform:translate(-1cqw,3cqw)}75%{transform:translate(-3cqw,-1cqw)}}
 .atp-flow .moving-p{transition:transform 850ms ease}.atp-flow:has(.trigger.visible) .moving-p{transform:translate(275px,105px)}
 .molecule-quiz .figure{max-height:23cqw}.molecule-quiz .options{grid-template-columns:1fr}.molecule-quiz .options li{font-size:1.75cqw}
 .reference-image{max-height:29cqw}.slide .mini{font-size:1.6cqw}
 .math{font-size:1em}.katex{font-size:1.1em}.equation .katex{font-size:1.7cqw}.katex-display{margin:.25em 0}.derivation{display:flex;flex-direction:column;gap:1cqw;flex:1;justify-content:center}.derivation .equation{padding:.85cqw 1.5cqw}.derivation .katex{font-size:2cqw}.bond-atoms .left text,.bond-atoms .right text,.moving-p text{fill:#fff}
-html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .gas-dot{animation:none!important}html.print-pdf .demo-controls{display:none}
-@media(prefers-reduced-motion:reduce){.diagram *,.bar,.bond-atoms *,.atp-flow *{transition:none!important}.gas-dot{animation:none!important}}
-@media print{.gas-dot{animation:none!important}.demo-controls{display:none}.draw{stroke-dashoffset:0!important}}
+html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .demo-controls{display:none}
+@media(prefers-reduced-motion:reduce){.diagram *,.bar,.bond-atoms *,.atp-flow *{transition:none!important}}
+@media print{.demo-controls{display:none}.draw{stroke-dashoffset:0!important}}
 
 .nowrap{white-space:nowrap}
 
@@ -222,19 +218,12 @@ html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(-
 @keyframes hill-roll{to{offset-distance:100%}}
 .temperature-panel{display:flex;flex-direction:column;gap:1cqw;min-height:0}
 .temperature-pair{height:100%}.temperature-model{min-height:20cqw}
-.temperature-panel .gas-field{min-height:18cqw}
-.temperature-explanation .gas-dot{width:1cqw;height:1cqw}
-.pressure-slide .diagram{--wall:347px}
-.pressure-piston{transition:transform 1.1s ease .2s}
-.pressure-slide:has(.pressure-expand.visible) .pressure-piston{transform:translateX(70px)}
-.pressure-slide:has(.pressure-expand.visible) .diagram{--wall:417px}
-.pressure-volume{transform-origin:68px 76px;transition:transform 1.1s ease .2s}
-.pressure-slide:has(.pressure-expand.visible) .pressure-volume{transform:scaleX(1.250896)}
-.pressure-particle{animation:pressure-bounce 3s linear infinite paused}
-.pressure-particle-2{animation-duration:3.8s;animation-delay:-1.4s;--start:150px}
-.pressure-particle-3{animation-duration:2.2s;animation-delay:-.7s;--start:225px}
-.present .pressure-particle{animation-play-state:running}
-@keyframes pressure-bounce{0%,100%{transform:translateX(0)}50%{transform:translateX(calc(var(--wall) - var(--start,118px) - 9px))}}
+/* One animated boundary keeps the piston, gas fill and particle collisions in sync. */
+@property --pressure-wall{syntax:"<length>";inherits:true;initial-value:347px}
+.pressure-slide .diagram{--pressure-wall:347px;transition:--pressure-wall 1.1s ease .2s}
+.pressure-slide:has(.pressure-expand.visible) .diagram{--pressure-wall:417px}
+.pressure-piston{transform:translateX(calc(var(--pressure-wall) - 347px))}
+.pressure-volume{width:calc(var(--pressure-wall) - 68px)}
 .volume-piston{transition:transform 1s ease}
 .volume-added{opacity:0;transition:opacity .7s ease}
 .volume-slide:has(.volume-expand.visible) .volume-piston{transform:translateX(110px)}
@@ -263,12 +252,8 @@ html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(-
 .phase-panel .diagram{flex:1;height:0;min-height:0}
 .phases-demo .equation{padding:.5cqw}
 .phase-particle{animation:phase-jitter 1.1s ease-in-out var(--delay) infinite alternate paused}
-.phase-liquid .phase-particle{animation-name:liquid-drift;animation-duration:3s}
-.phase-gas .phase-particle{animation-name:gas-drift;animation-duration:var(--speed,2.4s);animation-timing-function:linear}
 .present .phase-panel.visible .phase-particle{animation-play-state:running}
 @keyframes phase-jitter{from{transform:translate(-2px,1px)}to{transform:translate(2px,-2px)}}
-@keyframes liquid-drift{0%{transform:translate(0,0)}50%{transform:translate(var(--dx),var(--dy))}100%{transform:translate(calc(var(--dx)*-.8),calc(var(--dy)*-.6))}}
-@keyframes gas-drift{0%{transform:translate(0,0)}35%{transform:translate(var(--dx),var(--dy))}70%{transform:translate(calc(var(--dx)*-.8),var(--dy))}100%{transform:translate(calc(var(--dx)*-.7),calc(var(--dy)*-.8))}}
 .world-entropy-derivation .big-question{font-size:2.1cqw!important}
 .world-entropy-derivation .derivation,.reaction-potential-derivation .derivation{gap:.8cqw}
 .world-entropy-derivation .equation,.reaction-potential-derivation .equation{padding:.7cqw 1.2cqw}
@@ -291,19 +276,13 @@ html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(-
 .forward-three{animation-name:osmo-forward-three;animation-duration:10s;animation-delay:3s}
 .backward-one{animation-name:osmo-backward;animation-duration:9s;animation-delay:1s}
 .solute-bounce{animation-name:osmo-solute;animation-duration:4s;animation-iteration-count:infinite}
-@keyframes osmo-forward-one{0%{transform:translate(0,0)}25%{transform:translate(154px,0)}40%{transform:translate(75px,0)}60%{transform:translate(149px,-44px)}78%{transform:translate(210px,-44px)}100%{transform:translate(270px,-15px)}}
-@keyframes osmo-forward-two{0%{transform:translate(0,0)}30%{transform:translate(80px,15px)}50%{transform:translate(135px,5px)}75%{transform:translate(210px,5px)}100%{transform:translate(240px,26px)}}
-@keyframes osmo-forward-three{0%{transform:translate(0,0)}23%{transform:translate(109px,14px)}40%{transform:translate(20px,-25px)}60%{transform:translate(101px,-15px)}82%{transform:translate(177px,-15px)}100%{transform:translate(240px,-6px)}}
 @keyframes osmo-backward{0%{transform:translate(0,0)}25%{transform:translate(-128px,0)}40%{transform:translate(-50px,0)}63%{transform:translate(-120px,-40px)}82%{transform:translate(-183px,-40px)}100%{transform:translate(-235px,-10px)}}
 @keyframes osmo-solute{0%,100%{transform:translate(0,0)}50%{transform:translate(-107px,0)}}
-.osmo-level-left,.osmo-level-right{transform-origin:0 308px;transition:transform 1s ease}
-.osmosis-particles-slide:has(.osmosis-level-step.visible) .osmo-level-left{transform:scaleY(.91)}
-.osmosis-particles-slide:has(.osmosis-level-step.visible) .osmo-level-right{transform:scaleY(1.09)}
 .osmotic-pressure-slide .copy{gap:1.1cqw}
-.acid-base-pair{grid-template-rows:1fr auto;align-items:stretch}
-.acid-base-panel{display:flex;flex-direction:column;justify-content:center;gap:1.3cqw;min-width:0}
+.acid-base-pair{grid-template-rows:1fr auto auto;align-items:stretch;gap:1.2cqw 3cqw}
+.acid-base-panel{display:flex;flex-direction:column;justify-content:center;gap:1cqw;min-width:0}
 .acid-base-panel>h3{color:var(--accent)}
-.acid-base-slide .equation{padding:1.2cqw .7cqw}
+.acid-base-slide .equation{padding:.55cqw .7cqw}
 .acid-base-slide .equation .katex{font-size:1.9cqw}
 .neutralization{grid-column:1/-1;text-align:center}
 .neutralization h3{font-size:1.7cqw;margin-bottom:.6cqw}
@@ -317,7 +296,7 @@ html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(-
 .metabolism-slide .takeaway{margin-top:0}
 .metabolism-slide .takeaway li{margin:.3em 0}
 .demo.paused *{animation-play-state:paused!important}
-@media(prefers-reduced-motion:reduce){.hill-ball,.pressure-particle,.phase-particle,.water-jitter,.crossing-water,.solute-bounce{animation:none!important}.mu-transfer,.pressure-piston,.volume-piston,.osmo-level-left,.osmo-level-right,.buffer-plot-point{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.hill-ball,.pressure-particle,.phase-particle,.water-jitter,.crossing-water,.solute-bounce{animation:none!important}.mu-transfer,.pressure-slide .diagram,.volume-piston,.osmo-level-left,.osmo-level-right,.buffer-plot-point{transition:none!important}}
 html.print-pdf .hill-ball{offset-distance:100%;animation:none}
 html.print-pdf .pressure-particle,html.print-pdf .phase-particle,html.print-pdf .water-jitter,html.print-pdf .crossing-water,html.print-pdf .solute-bounce{animation:none!important}
 html.print-pdf .buffer-zone,html.print-pdf .buffer-plot-point{opacity:1}
@@ -349,3 +328,39 @@ html.print-pdf .buffer-zone,html.print-pdf .buffer-plot-point{opacity:1}
 .chemical-potential-slide:has(.mu-equilibrium-step.visible) .mu-balanced{opacity:1}
 
 .chemical-potential-slide>.content>div.fragment .equation .katex{font-size:2.15cqw}
+
+[data-particles] circle{animation:none;transform:none}
+.temperature-panel .temperature-particles{flex:1;width:100%;height:0;min-height:18cqw;border-radius:1.4cqw;background:var(--tint)}
+@keyframes osmo-forward-one{0.00%{transform:translate(0px,0px)}20.00%{transform:translate(174px,16px)}40.00%{transform:translate(96px,16px)}60.00%{transform:translate(170px,60px)}80.00%{transform:translate(233px,60px)}100.00%{transform:translate(290px,-45px)}}
+@keyframes osmo-forward-two{0.00%{transform:translate(0px,0px)}25.00%{transform:translate(80px,20px)}50.00%{transform:translate(135px,5px)}75.00%{transform:translate(200px,5px)}100.00%{transform:translate(240px,26px)}}
+@keyframes osmo-forward-three{0.00%{transform:translate(0px,0px)}20.00%{transform:translate(109px,15px)}40.00%{transform:translate(20px,20px)}60.00%{transform:translate(105px,55px)}80.00%{transform:translate(175px,55px)}100.00%{transform:translate(240px,-3px)}}
+@keyframes osmo-forward-four{0.00%{transform:translate(0px,0px)}16.67%{transform:translate(98px,-10px)}33.33%{transform:translate(211px,-30px)}50.00%{transform:translate(141px,-30px)}66.67%{transform:translate(208px,0px)}83.33%{transform:translate(318px,0px)}100.00%{transform:translate(413px,-85px)}}
+@keyframes osmo-forward-five{0.00%{transform:translate(0px,0px)}20.00%{transform:translate(75px,0px)}40.00%{transform:translate(10px,0px)}60.00%{transform:translate(75px,-25px)}80.00%{transform:translate(140px,-25px)}100.00%{transform:translate(335px,-43px)}}
+@keyframes osmo-backward-one{0.00%{transform:translate(0px,0px)}20.00%{transform:translate(-127px,0px)}40.00%{transform:translate(-45px,0px)}60.00%{transform:translate(-125px,30px)}80.00%{transform:translate(-195px,30px)}100.00%{transform:translate(-235px,-8px)}}
+
+.forward-four{animation-name:osmo-forward-four;animation-duration:10s;animation-delay:4s}
+.forward-five{animation-name:osmo-forward-five;animation-duration:11s;animation-delay:5s}
+@property --osmo-transfer{syntax:"<number>";inherits:true;initial-value:0}
+#osmosis>.content{--osmo-transfer:0}
+#osmosis:has(.osmosis-level-step.visible)>.content{animation:osmo-dilution 6s linear both}
+#osmosis>.content:has(.demo.paused){animation-play-state:paused}
+@keyframes osmo-dilution{from{--osmo-transfer:0}to{--osmo-transfer:1}}
+.osmo-level-left{y:calc(128px + 60px * var(--osmo-transfer));height:calc(180px - 60px * var(--osmo-transfer))}
+.osmo-level-right{y:calc(128px - 60px * var(--osmo-transfer));height:calc(180px + 60px * var(--osmo-transfer))}
+.osmosis-fixed-left{cy:calc(308px - (308px - var(--y)) * (1 - var(--osmo-transfer) / 3))}
+.osmosis-fixed-right{cy:calc(308px - (308px - var(--y)) * (1 + var(--osmo-transfer) / 3))}
+.osmosis-readout{margin-top:1cqw;display:grid;grid-template-columns:1fr .85fr 1.2fr;gap:2cqw;border-top:1px solid var(--line);padding-top:1.1cqw}
+.osmosis-readout>div{display:flex;flex-direction:column;gap:.5cqw}
+.osmosis-readout span,.osmosis-readout strong{font-size:1.65cqw;line-height:1.35}
+.osmosis-readout strong{font-weight:600}
+.osmosis-concentration{color:var(--accent)}
+.concentration-value{counter-reset:osmo-concentration calc(100 / (1 + var(--osmo-transfer) / 3))}
+.concentration-value::after{content:counter(osmo-concentration) "%"}
+.concentration-track{height:.55cqw;border-radius:1cqw;background:var(--tint);overflow:hidden}
+.concentration-track>span{display:block;height:100%;width:calc(100% / (1 + var(--osmo-transfer) / 3));background:var(--accent);border-radius:inherit}
+@media(prefers-reduced-motion:reduce){#osmosis:has(.osmosis-level-step.visible)>.content{animation:none;--osmo-transfer:1}}
+html.print-pdf #osmosis>.content{animation:none!important;--osmo-transfer:1}
+@media print{#osmosis>.content{animation:none!important;--osmo-transfer:1}}
+
+.acid-base-definition h3{font-size:1.85cqw;margin-bottom:.65cqw}
+.acid-base-in-water{display:flex;flex-direction:column;gap:.6cqw}
