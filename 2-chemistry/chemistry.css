@@ -1,4 +1,12 @@
 /* Course additions: reuse the typography and navigation of lecture 1. */
+.osmosis-intro .diagram{width:100%}
+.osmosis-intro .water-left,.osmosis-intro .water-right{transform-origin:0 310px;transition:transform .9s ease}
+.osmosis-intro:has(.osmosis-rise.visible) .water-left{transform:scaleY(.736842)}
+.osmosis-intro:has(.osmosis-rise.visible) .water-right{transform:scaleY(1.263158)}
+.osmosis-membrane{fill:none;stroke:var(--muted);stroke-width:5;stroke-dasharray:7 5}
+.osmosis-flow{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.osmosis-return{fill:none;stroke:var(--muted);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@media(prefers-reduced-motion:reduce){.osmosis-intro .water-left,.osmosis-intro .water-right{transition:none}}
 .slide .content{gap:1.25cqw;margin-top:2.5%;padding-bottom:6.8%}
 .slide h2{font-size:3.15cqw;max-width:88%;line-height:1.15}
 .slide p,.slide ul,.slide ol{font-size:1.85cqw;line-height:1.42}
@@ -6,7 +14,7 @@
 .slide li{margin:.52em 0}.slide li:first-child{margin-top:0}.slide li:last-child{margin-bottom:0}
 .slide .note,.slide .source{font-size:1.4cqw!important;line-height:1.35!important;color:var(--muted);margin:0!important;padding:0}
 .slide .source{margin-top:auto!important}.source a{text-decoration-thickness:1px}
-.slide .takeaway{font-size:1.75cqw;margin-top:.6cqw;padding-top:1.1cqw}
+.slide .takeaway{font-size:1.85cqw;line-height:1.42;margin-top:.6cqw;padding-top:1.1cqw}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4cqw;flex:1;min-height:0;align-items:center}
 .split.wide-figure{grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr)}
 .copy{display:flex;flex-direction:column;gap:1.4cqw;min-width:0}
@@ -84,10 +92,8 @@
 .gas-dot{position:absolute;width:1.2cqw;height:1.2cqw;left:var(--x);top:var(--y);border-radius:50%;background:var(--accent);animation:chem-motion var(--speed,4s) linear infinite;animation-play-state:paused}
 .present .gas-dot{animation-play-state:running}.demo.paused .gas-dot{animation-play-state:paused}
 @keyframes chem-motion{0%,100%{transform:translate(0,0)}25%{transform:translate(3cqw,1.5cqw)}50%{transform:translate(-1cqw,3cqw)}75%{transform:translate(-3cqw,-1cqw)}}
-.buffer rect{transition:y 650ms ease,height 650ms ease}
-.buffer:has(.trigger.visible) .acid-rect{y:58px;height:182px}.buffer:has(.trigger.visible) .base-rect{y:142px;height:98px}
 .atp-flow .moving-p{transition:transform 850ms ease}.atp-flow:has(.trigger.visible) .moving-p{transform:translate(275px,105px)}
-.molecule-quiz .figure{max-height:23cqw}.molecule-quiz .options{grid-template-columns:repeat(5,1fr)}.molecule-quiz .options li{font-size:1.5cqw;justify-content:center}
+.molecule-quiz .figure{max-height:23cqw}.molecule-quiz .options{grid-template-columns:1fr}.molecule-quiz .options li{font-size:1.75cqw}
 .reference-image{max-height:29cqw}.slide .mini{font-size:1.6cqw}
 .math{font-size:1em}.katex{font-size:1.1em}.equation .katex{font-size:1.7cqw}.katex-display{margin:.25em 0}.derivation{display:flex;flex-direction:column;gap:1cqw;flex:1;justify-content:center}.derivation .equation{padding:.85cqw 1.5cqw}.derivation .katex{font-size:2cqw}.bond-atoms .left text,.bond-atoms .right text,.moving-p text{fill:#fff}
 html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .gas-dot{animation:none!important}html.print-pdf .demo-controls{display:none}
@@ -135,16 +141,32 @@ html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .gas-dot{anima
 .transition-panel:has(.fragment.visible) .transition-arrow{opacity:1}
 .transition-panel.absorption:has(.fragment.visible) .transition-electron{transform:translateY(-120px)}
 .transition-panel.emission:has(.fragment.visible) .transition-electron{transform:translateY(120px)}
-.photon-formula{display:grid;gap:.9cqw}
-.photon-formula .equation{padding:.6cqw 1cqw}
-.formula-key{display:flex;justify-content:space-between;gap:1cqw;font-size:1.4cqw;line-height:1.4}
 @media(prefers-reduced-motion:reduce){.transition-electron,.transition-arrow{transition:none}}
 html.print-pdf .transition-arrow{opacity:1}
 html.print-pdf .absorption .transition-electron{transform:translateY(-120px)}
 html.print-pdf .emission .transition-electron{transform:translateY(120px)}
 
-.slide ul.takeaway{display:block;padding-left:1.25em;font-size:1.75cqw;line-height:1.36}
+.slide ul.takeaway{display:block;padding-left:1.25em;font-size:1.85cqw;line-height:1.42}
 .slide ul.takeaway li{margin:.28em 0}
 
 .work-expansion .equation{padding:.75cqw 1cqw}
 .work-expansion .copy{gap:.9cqw}
+
+/* Native fragment states also drive answers and the two teaching diagrams. */
+.options .correct-option.fragment{opacity:1!important;visibility:visible!important;transition:background .2s,color .2s}
+.options .correct-option.fragment.visible{background:#28698d;color:#fff}
+.options .correct-option.fragment.visible b{color:#fff}
+.molecule-question-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:3cqw;align-items:center;flex:1;min-height:0}
+.molecule-question-layout>.equation{padding:1.5cqw .5cqw}.molecule-question-layout>.equation .katex{font-size:1.55cqw}
+.cohesion-slide .split{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:3cqw}
+.osmosis-water{fill:#fff;stroke:var(--accent);stroke-width:1.7}
+.water-forward,.water-back{transition:transform 1.25s ease-in-out}
+.osmosis-intro:has(.osmosis-flow-step.visible) .water-forward{transform:translateX(140px)}
+.osmosis-intro:has(.osmosis-flow-step.visible) .water-back{transform:translateX(-120px)}
+.buffer-slide .diagram{width:100%}
+.buffer-base-fill{fill:#e8efcf}.buffer-added-fill{fill:#f9edcd}
+.buffer-added{transition:transform .8s ease,opacity .6s ease}
+.buffer-slide:has(.buffer-convert.visible) .buffer-added{transform:translate(100px,120px);opacity:0}
+.buffer-slide .buffer-product.visible{transition-delay:.45s}
+@media(prefers-reduced-motion:reduce){.water-forward,.water-back,.buffer-added,.buffer-slide .buffer-product{transition:none!important}}
+@media print{.buffer-added{display:none}.water-forward,.water-back{transition:none!important}}

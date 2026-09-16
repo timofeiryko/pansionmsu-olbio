@@ -44,6 +44,7 @@
 
 - [OpenStax Chemistry: свободная энергия и равновесие](https://openstax.org/books/chemistry-2e/pages/16-4-free-energy)
 - [OpenStax Chemistry: буферы](https://openstax.org/books/chemistry-2e/pages/14-6-buffers)
+- [OpenStax Biology: осмос и пассивный транспорт](https://openstax.org/books/biology-2e/pages/5-2-passive-transport)
 - [OpenStax Biology: вода](https://openstax.org/books/biology-2e/pages/2-2-water)
 - [OpenStax Organic Chemistry: циклические сахара и аномеры](https://openstax.org/books/organic-chemistry/pages/25-5-cyclic-structures-of-monosaccharides-anomers)
 - [OpenStax Organic Chemistry: реакции сахаров](https://openstax.org/books/organic-chemistry/pages/25-6-reactions-of-monosaccharides)
