@@ -4,11 +4,19 @@
 
 [Лекция 1. Что такое биология?](https://timofeiryko.github.io/pansionmsu-olbio/1-intro/)
 
+[Домашняя работа после лекции 1](https://timofeiryko.github.io/pansionmsu-olbio/1-homework/) · [Лекция 2. Химия жизни](https://timofeiryko.github.io/pansionmsu-olbio/2-chemistry/)
+
 Репозиторий: `timofeiryko/pansionmsu-olbio`. Первая лекция находится в папке `1-intro/`. После изменения HTML, CSS или медиа сделайте commit и push в `main` — GitHub Pages обновит сайт автоматически. Корневой `index.html` только открывает первую лекцию.
 
 **Пошаговое руководство по редактированию и сравнению Pinegrow / TinyMCE — [EDITING.md](EDITING.md).**
 
 ## Открыть
+
+- `2-chemistry/index.html` — «Химия жизни», 181 слайд: разбор ДЗ, восемь основных блоков в заданном порядке, затем органическая химия и биомолекулы.
+- `1-homework/index.html` — отдельная домашняя работа, 7 слайдов, без ответов.
+- `chemistry-of-life.html` и `homework-1.html` — автономные копии этих презентаций после запуска `python package.py`.
+- `olympiad-biology-reveal.zip` — весь редактируемый курс: обе лекции, ДЗ, локальные библиотеки и иллюстрации. Распакуйте папку целиком: новые презентации используют общую тему из `1-intro/`.
+- [Источники и отбор олимпиадных задач](2-chemistry/SOURCES.md) · [Карта переноса материала PPTX](2-chemistry/CONTENT-MAP.md).
 
 - `1-intro/index.html` — основная редактируемая презентация. Открывается двойным щелчком.
 - `olympiad-biology.html` — автономная копия: шрифты, фотографии, видео, CSS и Reveal.js встроены в файл. Для показа, включая видео, не нужен интернет. Внешние ссылки требуют подключения.
@@ -79,11 +87,15 @@ S — окно докладчика с таймером и следующим с
 
 ## PDF
 
+Для новых материалов: [«Химия жизни» в режиме печати](https://timofeiryko.github.io/pansionmsu-olbio/2-chemistry/?print-pdf) · [домашняя работа в режиме печати](https://timofeiryko.github.io/pansionmsu-olbio/1-homework/?print-pdf).
+
 Откройте [лекцию в режиме PDF](https://timofeiryko.github.io/pansionmsu-olbio/1-intro/?print-pdf) в Chromium/Chrome. Затем Ctrl+P → сохранить как PDF, альбомная ориентация, без полей, включить печать фона и выключить колонтитулы браузера.
 
 Все fragments печатаются вместе на одном слайде; анимации останавливаются. Для видео используется его постер.
 
 ## Обновить автономную копию
+
+`python package.py` также обновляет `chemistry-of-life.html`, `homework-1.html` и архив со всеми тремя презентациями. Формулы KaTeX и шрифты встроены в автономные файлы. Авторитетный источник для правок — `index.html` соответствующей папки, а не собранная копия.
 
 После правок `1-intro/index.html` выполните `python package.py` из корня проекта. Нужна только стандартная библиотека Python. Скрипт обновляет автономный HTML и ZIP, в том числе после добавления слайдов. Автономный HTML остаётся в корне под именем `olympiad-biology.html`.
 
