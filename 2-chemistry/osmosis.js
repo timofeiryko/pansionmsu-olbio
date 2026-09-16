@@ -11,12 +11,11 @@ function createOsmosis(seed = 713) {
     particles.push({x: 60 + side * 380 + (i % 10) * 36 + random() * 3,
       y: 212 + Math.floor(i / 10) * 23 + random() * 3, r: 7,
       vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-      solute: side === 1 && i % 2 === 0, hydrating: side === 1 && [12,26,34,48].includes(i),
-      side, crossed: -10, hydratedTo: null, releaseAt: 0, rebindAt: 0});
+      solute: side === 1 && i % 2 === 0, side});
   }
   return {particles, kineticEnergy: particles.reduce((sum,p)=>sum+p.vx*p.vx+p.vy*p.vy,0),
     offset: 0, time: 0, forward: 0, backward: 0,
-    contacts: 0, wallHits: 0, soluteHits: 0, hydrationExchanges: 0,
+    contacts: 0, wallHits: 0, soluteHits: 0,
     pores: [[245, 280], [298, 340]]};
 }
 
@@ -46,7 +45,6 @@ function confineOsmosis(p, model) {
       p.vx = direction * Math.sqrt(energy);
       if (p.side === 0) model.forward++; else model.backward++;
       p.side = 1 - p.side;
-      p.crossed = model.time;
       model.offset = 150 * (model.forward - model.backward) / 60;
     }
   } else if (Math.abs(p.x - 420) < p.r + 3 || (p.side === 0 ? p.x > 420 : p.x < 420)) {
@@ -61,21 +59,6 @@ function confineOsmosis(p, model) {
 
 function stepOsmosis(model, dt) {
   model.time += dt;
-  for (const p of model.particles) {
-    if (p.solute) continue;
-    if (p.hydratedTo !== null) {
-      const ion = model.particles[p.hydratedTo];
-      const dx = ion.x - p.x, dy = ion.y - p.y, d = Math.hypot(dx,dy);
-      if (model.time > p.releaseAt || d > 42 || p.side !== ion.side) {
-        p.hydratedTo = null; p.rebindAt = model.time + 1.5; model.hydrationExchanges++;
-      } else if (d > 0) {
-        // Temporary association: water follows the ion, then rejoins the free water.
-        const impulse = (55 * (d - 21) + 5 * ((ion.vx-p.vx)*dx + (ion.vy-p.vy)*dy) / d) * dt;
-        p.vx += impulse * dx / d; p.vy += impulse * dy / d;
-        ion.vx -= impulse * dx / d; ion.vy -= impulse * dy / d;
-      }
-    }
-  }
   for (const p of model.particles) { p.x += p.vx * dt; p.y += p.vy * dt; confineOsmosis(p, model); }
   for (let pass = 0; pass < 3; pass++) {
     for (let i = 0; i < model.particles.length; i++) for (let j = i + 1; j < model.particles.length; j++) {
@@ -83,18 +66,12 @@ function stepOsmosis(model, dt) {
       if (Math.abs(a.x-b.x)>32 || Math.abs(a.y-b.y)>32) continue;
       if (a.side !== b.side && (Math.abs(a.x - 420) > 10 || Math.abs(b.x - 420) > 10)) continue;
       const distance = Math.hypot(a.x-b.x,a.y-b.y);
-      if (pass === 0 && a.side === b.side && distance < 28 && a.solute !== b.solute) {
-        const ion = a.solute ? a : b, water = a.solute ? b : a, ionIndex = a.solute ? i : j;
-        if (ion.hydrating && water.hydratedTo === null && model.time > water.rebindAt && model.particles.filter(p=>p.hydratedTo===ionIndex).length < 3) {
-          water.hydratedTo = ionIndex; water.releaseAt = model.time + 1.2 + ((i+j)%7)/5;
-        }
-      }
       if (distance < a.r + b.r) model.contacts++;
       collideParticles(a, b);
     }
     for (const p of model.particles) confineOsmosis(p, model);
   }
-  // Both compartments share a temperature despite pressure work and hydration relaxation.
+  // Both compartments share a temperature despite pressure work.
   for (const side of [0,1]) {
     const ps = model.particles.filter(p=>p.side===side);
     const energy = ps.reduce((sum,p)=>sum+p.vx*p.vx+p.vy*p.vy,0);
@@ -110,7 +87,7 @@ if (typeof document !== 'undefined') {
   const layer = svg.querySelector('.osmosis-particles');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const printMode = matchMedia('print');
-  let model = createOsmosis(), previous, wasVisible = false;
+  let model = createOsmosis(), previous, wasVisible = false, shownOffset = 0;
   const nodes = model.particles.map(p => {
     const node = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     node.setAttribute('r', p.r);
@@ -118,55 +95,29 @@ if (typeof document !== 'undefined') {
     layer.appendChild(node);
     return node;
   });
-  const shells = model.particles.map(p => {
-    if (!p.hydrating) return null;
-    const node = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    node.setAttribute('r', '31'); node.setAttribute('class', 'hydration-shell');
-    svg.querySelector('.osmosis-hydration').appendChild(node);
-    return node;
-  });
-  const bonds = model.particles.map(p => {
-    if (p.solute) return null;
-    const node = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    node.setAttribute('class', 'hydration-bond');
-    svg.querySelector('.osmosis-hydration').appendChild(node);
-    return node;
-  });
   const leftFill = svg.querySelector('.osmo-level-left'), rightFill = svg.querySelector('.osmo-level-right');
   const leftSurface = svg.querySelector('.osmo-surface-left'), rightSurface = svg.querySelector('.osmo-surface-right');
-  const forward = slide.querySelector('[data-osmosis="forward"]'), backward = slide.querySelector('[data-osmosis="backward"]');
-  const net = slide.querySelector('[data-osmosis="net"]'), volume = slide.querySelector('[data-osmosis="volume"]');
+  const volume = slide.querySelector('[data-osmosis="volume"]');
   const concentration = slide.querySelector('[data-osmosis="concentration"]'), bar = slide.querySelector('.concentration-track>span');
   function draw() {
     model.particles.forEach((p,i) => {
-      nodes[i].setAttribute('cx', p.x.toFixed(2)); nodes[i].setAttribute('cy', p.y.toFixed(2));
-      nodes[i].classList.toggle('just-crossed', model.time - p.crossed < 0.8);
-      nodes[i].classList.toggle('hydrated-water', p.hydratedTo !== null);
-      if (shells[i]) { shells[i].setAttribute('cx', p.x.toFixed(2)); shells[i].setAttribute('cy', p.y.toFixed(2)); }
-      if (bonds[i]) {
-        bonds[i].style.visibility = p.hydratedTo === null ? 'hidden' : 'visible';
-        if (p.hydratedTo !== null) {
-          const ion = model.particles[p.hydratedTo];
-          bonds[i].setAttribute('x1', ion.x.toFixed(2)); bonds[i].setAttribute('y1', ion.y.toFixed(2));
-          bonds[i].setAttribute('x2', p.x.toFixed(2)); bonds[i].setAttribute('y2', p.y.toFixed(2));
-        }
-      }
+      const sign = p.side ? -1 : 1;
+      const height = 150 - sign * model.offset, shownHeight = 150 - sign * shownOffset;
+      nodes[i].setAttribute('cx', p.x.toFixed(2));
+      nodes[i].setAttribute('cy', (345 - p.r - (345 - p.r - p.y) * (shownHeight - 2*p.r) / (height - 2*p.r)).toFixed(2));
     });
     for (const [fill, surface, sign] of [[leftFill,leftSurface,1],[rightFill,rightSurface,-1]]) {
-      const top = 195 + sign * model.offset;
+      const top = 195 + sign * shownOffset;
       fill.setAttribute('y', top.toFixed(2)); fill.setAttribute('height', (345 - top).toFixed(2));
       surface.setAttribute('y1', top.toFixed(2)); surface.setAttribute('y2', top.toFixed(2));
     }
-    const ratio = (150 + model.offset) / 150;
-    forward.textContent = model.forward; backward.textContent = model.backward;
-    const balance = model.forward - model.backward;
-    net.textContent = balance === 0 ? '0' : `${Math.abs(balance)} ${balance > 0 ? '→' : '←'}`;
+    const ratio = (150 + shownOffset) / 150;
     volume.textContent = `${ratio.toFixed(2).replace('.', ',')} V₀`;
     concentration.textContent = `${Math.round(100 / ratio)}%`;
     bar.style.width = `${100 / ratio}%`;
     svg.setAttribute('aria-label', `Вода движется через мембрану в обе стороны. В раствор: ${model.forward}, обратно: ${model.backward}. 30 частиц растворённого вещества остаются справа`);
   }
-  function reset() { model = createOsmosis(); draw(); }
+  function reset() { model = createOsmosis(); shownOffset = 0; draw(); }
   slide.querySelector('[data-osmosis-reset]').addEventListener('click', () => {
     demo.classList.remove('paused');
     const pause = demo.querySelector('[data-motion]');
@@ -182,6 +133,9 @@ if (typeof document !== 'undefined') {
     if (visible && !demo.classList.contains('paused') && !document.hidden && !reducedMotion.matches && !printMode.matches && !document.documentElement.classList.contains('print-pdf')) {
       const steps = Math.ceil(dt / (1 / 240));
       for (let i = 0; i < steps; i++) stepOsmosis(model, dt / steps);
+      // Show a macroscopic level: progressively average the small-number fluctuations.
+      const smoothingTime = 2 + Math.min(model.time / 5, 10);
+      shownOffset += (model.offset - shownOffset) * (1 - Math.exp(-dt / smoothingTime));
       draw();
     }
     requestAnimationFrame(animate);

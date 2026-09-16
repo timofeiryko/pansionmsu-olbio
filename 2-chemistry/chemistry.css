@@ -262,7 +262,7 @@ html.print-pdf .electronegativity-map .en-fluorine{fill:var(--tint);stroke:var(-
 .chemical-potential-slide>.content>div.fragment .equation{padding:.55cqw}
 .mu-transfer{transition:transform 1.3s ease}
 .chemical-potential-slide:has(.mu-step.visible) .mu-transfer{transform:translateX(190px)}
-.osmosis-layout{grid-template-columns:minmax(0,1.9fr) minmax(0,.7fr);grid-template-rows:minmax(0,1fr);gap:2.5cqw}
+.osmosis-layout{grid-template-columns:minmax(0,1.8fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);gap:2.5cqw}
 .membrane-solid{stroke:#617066;stroke-width:7;stroke-linecap:round;fill:none}
 .water-molecule{fill:#fff;stroke:#28698d;stroke-width:2.3}
 .solute-molecule{fill:#ad5842;stroke:#fff;stroke-width:1.5}
@@ -329,11 +329,7 @@ html.print-pdf .buffer-zone,html.print-pdf .buffer-plot-point{opacity:1}
 .osmosis-demo .demo-controls{justify-content:flex-start}
 .osmosis-demo .demo-controls button:last-child{background:transparent;color:var(--muted)}
 .osmo-surface-left,.osmo-surface-right{stroke:var(--accent);stroke-width:2;stroke-opacity:.5}
-.hydration-shell{fill:#28698d;fill-opacity:.08;stroke:#28698d;stroke-opacity:.4;stroke-width:1.5;stroke-dasharray:3 3}
-.hydration-bond{stroke:#28698d;stroke-width:1.3;stroke-opacity:.55}
-.water-molecule.hydrated-water{fill:#aacfe2}
-.water-molecule.just-crossed{fill:#28698d;stroke:#fff;stroke-width:2}
-.osmosis-readout{margin-top:.3cqw;display:grid;grid-template-columns:1fr 1fr 1.35fr 1.2fr 1.4fr;gap:1.5cqw;border-top:1px solid var(--line);padding-top:1cqw;font-variant-numeric:tabular-nums}
+.osmosis-readout{margin-top:.3cqw;display:grid;grid-template-columns:1fr 1fr;gap:1.5cqw;border-top:1px solid var(--line);padding-top:1cqw;font-variant-numeric:tabular-nums}
 .osmosis-readout>div{display:flex;flex-direction:column;gap:.45cqw}
 .osmosis-readout span{font-size:1.55cqw;line-height:1.3}
 .osmosis-readout strong{font-size:2cqw;line-height:1.3;font-weight:600;color:var(--accent)}
@@ -343,5 +339,3 @@ html.print-pdf .buffer-zone,html.print-pdf .buffer-plot-point{opacity:1}
 .osmosis-layout .copy{min-height:0}
 .osmosis-definition{margin:0!important}
 .osmosis-particles-slide .content{gap:.8cqw}
-
-.osmosis-layout .solute-key::marker{color:#ad5842}
