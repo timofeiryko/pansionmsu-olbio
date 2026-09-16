@@ -8,7 +8,7 @@ html=source
 for src in re.findall(r'<link rel="stylesheet" href="([^"]+)">',source):
     html=html.replace(f'<link rel="stylesheet" href="{src}">','<style>'+(lecture/src.split('?',1)[0]).read_text(encoding='utf-8')+'</style>')
 for src in re.findall(r'<script src="([^"]+)"></script>',source):
-    js=(lecture/src).read_text(encoding='utf-8').replace('</script','<\\/script')
+    js=(lecture/src.split('?',1)[0]).read_text(encoding='utf-8').replace('</script','<\\/script')
     html=html.replace(f'<script src="{src}"></script>','<script>'+js+'</script>')
 for src in set(re.findall(r'assets/[\w.-]+',html)):
     mime=mimetypes.guess_type(src)[0] or 'application/octet-stream'
@@ -43,7 +43,7 @@ for folder, filename in [('2-chemistry','chemistry-of-life.html'),('1-homework',
         css=re.sub(r'url\(([^)]+)\)',inline_css,css)
         document=document.replace(f'<link rel="stylesheet" href="{src}">','<style>'+css+'</style>')
     for src in re.findall(r'<script src="([^"]+)"></script>',document):
-        js=(base/src).read_text(encoding='utf-8').replace('</script','<\\/script')
+        js=(base/src.split('?',1)[0]).read_text(encoding='utf-8').replace('</script','<\\/script')
         document=document.replace(f'<script src="{src}"></script>','<script>'+js+'</script>')
     for src in set(re.findall(r'(?:src|href|poster)="((?:\.\./2-chemistry/)?assets/[^\"]+)"',document)):
         document=document.replace('"'+src+'"','"'+data_url(base/src)+'"')
