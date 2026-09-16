@@ -8,7 +8,7 @@
 - [Исходная публикация на YouTube](https://www.youtube.com/watch?v=tQgDKTOtX3w).
 - Лицензия: [Creative Commons Attribution 3.0 Unported](https://creativecommons.org/licenses/by/3.0/).
 - Использована часть **0–37 секунд** из 45-секундного ролика. Звук удалён, видео перекодировано в WebM/VP9 с сохранением разрешения 1280 × 720. Постер — кадр на 8-й секунде. Пространственного кадрирования и изменения скорости нет.
-- Файлы: `assets/crystallization.webm`, `assets/crystallization-poster.jpg`.
+- Файлы: `1-intro/assets/crystallization.webm`, `1-intro/assets/crystallization-poster.jpg`.
 
 Автор, источник, лицензия и изменения указаны также под видео, поэтому сохраняются в автономном HTML. Файлы входят в архив: внешний видеосервис для показа не требуется.
 
