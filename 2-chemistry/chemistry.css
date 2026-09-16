@@ -34,6 +34,8 @@
 .tile .diagram{height:0;flex:1;min-height:0}
 .formula{font-size:3.5cqw!important;line-height:1.35!important;font-weight:500;letter-spacing:-.015em;font-variant-numeric:tabular-nums}
 .equation{padding:1.6cqw 2cqw;background:var(--tint);border-radius:1.5cqw;text-align:center}
+.core-formulas .equation{background:transparent}
+.core-formulas .katex .fbox{border-color:var(--accent)}
 .equation p{font-size:2.4cqw}.equation+.equation{margin-top:.7cqw}
 .definitions{display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw;flex:1;align-items:center}
 .definitions h3{color:var(--accent);margin-bottom:1cqw}
