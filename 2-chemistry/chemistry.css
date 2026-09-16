@@ -135,7 +135,7 @@ html.print-pdf .draw{stroke-dashoffset:0!important}html.print-pdf .gas-dot{anima
 .transition-panel{display:flex;flex-direction:column;min-height:0;gap:.6cqw}
 .transition-panel h3{font-size:2cqw;margin:0}
 .transition-panel .diagram{flex:1;height:0;min-height:0}
-.transition-panel p{font-size:1.75cqw;min-height:5cqw}
+.transition-panel p{font-size:1.85cqw;min-height:5cqw}
 .transition-electron{transition:transform .8s ease}
 .transition-arrow{opacity:0;transition:opacity .3s ease}
 .transition-panel:has(.fragment.visible) .transition-arrow{opacity:1}
