@@ -56,7 +56,11 @@
 .course-table th{text-align:left;font-weight:650;background:var(--tint)}
 .course-table th,.course-table td{padding:.8cqw 1cqw;border-bottom:1px solid var(--line);vertical-align:top}
 .course-table tbody tr:last-child td{border:0}.course-table.compact{font-size:1.5cqw}
-.step-line{display:flex;align-items:center;gap:1.6cqw;flex:1;min-height:0}.step-line>div{flex:1;min-width:0}.step-line .arrow{font-size:3cqw;color:var(--accent);flex:0 0 auto}
+.step-line{display:flex;align-items:center;gap:1.6cqw;flex:1;min-height:0}.step-line>div{flex:1;min-width:0}
+/* Captions occupy 4.8cqw + 1.2cqw below each node; align arrows with the node, not the whole column. */
+.step-line .arrow{position:relative;width:3cqw;height:2cqw;font-size:0;color:var(--accent);flex:0 0 auto;translate:0 -3cqw}
+.step-line .arrow::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid currentColor;translate:0 -50%}
+.step-line .arrow::after{content:"";position:absolute;right:0;top:50%;width:.65cqw;height:.65cqw;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:translateY(-50%) rotate(45deg)}
 .step-line .node{border-radius:50%;aspect-ratio:1;background:var(--tint);display:flex;align-items:center;justify-content:center;text-align:center;font-size:2cqw;font-weight:500;padding:1.4cqw}
 .step-line p{margin-top:1.2cqw;text-align:center;font-size:1.6cqw}
 .step-line>div{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
